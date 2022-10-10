@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "clear": "^0.1.0",
     "crypto-js": "^4.1.1",
+    "download-git-repo": "^3.0.2",
+    "figlet": "^1.5.2",
+    "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-body": "^4.2.0",
@@ -13,7 +17,13 @@
     "koa-static": "^5.0.0",
     "koa-xml-body": "^2.2.0",
     "moment": "^2.29.1",
+    "node-cmd": "^5.0.0",
+    "node-native-zip": "^1.1.0",
+    "node-stream-zip": "^1.15.0",
+    "open": "^8.4.0",
+    "ora": "^6.0.1",
     "pdf2json": "^2.0.0",
+    "pkg": "^5.5.1",
     "xml2js": "^0.4.23"
   },
   "scripts": {

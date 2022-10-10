@@ -6,9 +6,13 @@ const koaBody = require('koa-body'); //解析上传文件的插件
 const xmlParser = require('koa-xml-body');//解析xml文件的插件
 const router = require('koa-router')();
 const jwt = require('jsonwebtoken')
-const registeRouter = require('./routers/registe')
-const loginRouter = require('./routers/login')
-const userRouter = require('./routers/user');
+// const registeRouter = require('./routers/registe')
+// const loginRouter = require('./routers/login')
+// const userRouter = require('./routers/user');
+const searchSmokeRouter = require('./routers/searchSmoke');
+const eluxSearchRouter = require('./routers/eluxSearch');
+const aromaKingSearchRouter = require('./routers/aromaKingSearch');
+
 const Application = require('koa');
 app.use(koaBody({
     multipart: true,
@@ -26,7 +30,10 @@ app.use(async (ctx, next) => {
         url == '/api/regist' || 
         url == "/api/uploadFile" || 
         url.includes('api/download/') 
-        || url.includes('/WX')) {
+        || url.includes('/search')
+        || url.includes('/api/eluxSearch')
+        || url.includes('/api/aromaKingSearch')
+        || url.includes('/api/searchSmoke')) {
         await next()
     } else {
         let token = ctx.request.headers['token'];
@@ -53,11 +60,17 @@ app.use(async (ctx, next) => {
 
 
 //启动路由
-app.use(loginRouter.routes());//登录页面
-app.use(registeRouter.routes());// 注册页面逻辑
-app.use(userRouter.routes());// 用户增删改查路由
+// app.use(loginRouter.routes());//登录页面
+// app.use(registeRouter.routes());// 注册页面逻辑
+// app.use(userRouter.routes());// 用户增删改查路由
+app.use(searchSmokeRouter.routes());// 电子烟增删改查路由
+app.use(eluxSearchRouter.routes());// 电子烟增删改查路由
+app.use(aromaKingSearchRouter.routes());// 电子烟增删改查路由
+
+
+
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(80,()=>{
+app.listen(80,'0.0.0.0',()=>{
     console.log('[demo] server is starting at port 80');
 });
