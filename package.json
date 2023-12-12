@@ -8,6 +8,7 @@
     "crypto-js": "^4.1.1",
     "download-git-repo": "^3.0.2",
     "figlet": "^1.5.2",
+    "geoip-lite": "^1.4.7",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",

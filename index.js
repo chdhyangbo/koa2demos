@@ -1,7 +1,11 @@
 const Koa  = require('koa');
 const app = new Koa();
+
+// 生成静态目录
 const KoaStatic = require('koa-static');
-app.use(KoaStatic('./static'));
+
+const path = require('path')
+app.use(KoaStatic(path.join( __dirname, './static')));
 const koaBody = require('koa-body'); //解析上传文件的插件
 const xmlParser = require('koa-xml-body');//解析xml文件的插件
 const router = require('koa-router')();
@@ -11,6 +15,7 @@ const jwt = require('jsonwebtoken')
 // const userRouter = require('./routers/user');
 const searchSmokeRouter = require('./routers/searchSmoke');
 const eluxSearchRouter = require('./routers/eluxSearch');
+const antiSearchRouter = require('./routers/antiSearch');
 const aromaKingSearchRouter = require('./routers/aromaKingSearch');
 
 const Application = require('koa');
@@ -33,6 +38,7 @@ app.use(async (ctx, next) => {
         || url.includes('/search')
         || url.includes('/api/eluxSearch')
         || url.includes('/api/aromaKingSearch')
+        || url.includes('/api/antiSearch')
         || url.includes('/api/searchSmoke')) {
         await next()
     } else {
@@ -66,6 +72,8 @@ app.use(async (ctx, next) => {
 app.use(searchSmokeRouter.routes());// 电子烟增删改查路由
 app.use(eluxSearchRouter.routes());// 电子烟增删改查路由
 app.use(aromaKingSearchRouter.routes());// 电子烟增删改查路由
+app.use(antiSearchRouter.routes());// 电子烟增删改查路由 
+
 
 
 
