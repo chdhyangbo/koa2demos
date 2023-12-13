@@ -17,6 +17,7 @@ const searchSmokeRouter = require('./routers/searchSmoke');
 const eluxSearchRouter = require('./routers/eluxSearch');
 const antiSearchRouter = require('./routers/antiSearch');
 const aromaKingSearchRouter = require('./routers/aromaKingSearch');
+const smsCodeRouter = require('./routers/smsCode');
 
 const Application = require('koa');
 app.use(koaBody({
@@ -39,6 +40,7 @@ app.use(async (ctx, next) => {
         || url.includes('/api/eluxSearch')
         || url.includes('/api/aromaKingSearch')
         || url.includes('/api/antiSearch')
+        || url.includes('/api/smsCode')
         || url.includes('/api/searchSmoke')) {
         await next()
     } else {
@@ -73,6 +75,7 @@ app.use(searchSmokeRouter.routes());// 电子烟增删改查路由
 app.use(eluxSearchRouter.routes());// 电子烟增删改查路由
 app.use(aromaKingSearchRouter.routes());// 电子烟增删改查路由
 app.use(antiSearchRouter.routes());// 电子烟增删改查路由 
+app.use(smsCodeRouter.routes());// 验证码增删改查路由 
 
 
 
