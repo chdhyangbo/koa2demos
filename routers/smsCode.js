@@ -14,15 +14,13 @@ const moment = require('moment');
 
 router.post('/smsCode/query', async (ctx, next) => {
   const { searchNumber, ip, city } = ctx.request.body;
-  if (searchNumber && searchNumber.length != 14) {
-    ctx.body = {
-      message: '参数异常'
-    }
-  }
+ 
   let codeItem = await DB.find('smsCode', {
     value: searchNumber
   })
+  console.log(codeItem)
   codeItem = codeItem[0]
+  let body = {}
   if (codeItem && codeItem._id) {
     await DB.update('smsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
@@ -35,19 +33,18 @@ router.post('/smsCode/query', async (ctx, next) => {
         }
       ]
     });
-  }else {
-    await DB.insert('smsCode', {
-      value: searchNumber,
-      queryTime:[{
-        time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        ip,
-        city
-      }]
-    })
+    body = {
+      message: '校验成功',
+      ...codeItem,
+      cc: 0
+    };
+  } else {
+    body = {
+      message: '查询失败',
+      cc: 1
+    }
   }
-  ctx.body = {
-    message: '校验成功'
-  };
+  ctx.body = body
 })
 
 module.exports = router;
