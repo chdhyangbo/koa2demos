@@ -13,7 +13,7 @@ const DB = require('../db/index.js');
 const moment = require('moment');
 
 router.post('/smsCode/query', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '', productName = '', serialNumber = '', productType = '' } = ctx.request.body;
+  const { searchNumber, ip = '', city = '' } = ctx.request.body;
  
   let codeItem = await DB.find('smsCode', {
     value: searchNumber
@@ -30,9 +30,6 @@ router.post('/smsCode/query', async (ctx, next) => {
           time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
           ip,
           city,
-          productName,
-          serialNumber,
-          productType
         }
       ]
     });
