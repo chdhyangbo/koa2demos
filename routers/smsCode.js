@@ -97,7 +97,7 @@ router.post('/smsCode/elfp', async (ctx, next) => {
     await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
       queryTime: [
-        ...codeItem.queryTime,
+        ...codeItem.queryTime || [],
         {
           time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
           ip,
