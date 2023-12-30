@@ -2,10 +2,17 @@
 const  MongoDB = require('mongodb');
 // 获得数据库客户端
 const  MongoClient = MongoDB.MongoClient;
+// 引入mongoose
+const mongoose = require('mongoose');
 // 获取操作数据库ID的方法
 const  ObjectID = MongoDB.ObjectID;
 // 引入数据库的配置文件
 const  Config = require('../config/db.js');
+const url = Config.dbUrl+Config.dbName;
+
+const options = {
+    connectTimeoutMS: 5000, // 设置连接超时时间为5秒
+};
  
 class DB{
     // 单例模式，解决多次实例化实例不共享的问题
@@ -25,7 +32,11 @@ class DB{
         let that=this;
         return new Promise((resolve,reject)=>{
             //  解决数据库多次连接的问题
+<<<<<<< HEAD
             if(!that.dbClient){   
+=======
+            if(!that.dbClient){    
+>>>>>>> a8b82175111393832348f89575c98125d86d8938
                 MongoClient.connect(Config.dbUrl, (err,client)=>{
                     if(err){
                         console.log('链接数据库失败')
@@ -36,6 +47,12 @@ class DB{
                         resolve(that.dbClient)
                     }
                 })
+                // console.log(MongoClient, 'xxxx');
+                // mongoose.connect(Config.dbUrl).then(() => {
+                //     console.log('success');
+                // }).catch((err) => {
+                //     console.log('fail');
+                // })
             }else{
                 resolve(that.dbClient);
             }
