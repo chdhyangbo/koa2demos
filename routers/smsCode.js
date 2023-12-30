@@ -14,14 +14,25 @@ const moment = require('moment');
 
 router.post('/smsCode/query', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
- 
-  let codeItem = await DB.find('smsCode', {
-    value: searchNumber
-  })
+  let codeItem = []
+  try {
+    codeItem= await DB.find('smsCode', {
+      value: searchNumber
+    })
+  } catch (error) {
+    console.log(error)
+    ctx.body = {
+      message: '查询失败',
+      cc: 1
+    }
+    next();
+  }
+  
   console.log(codeItem)
   codeItem = codeItem[0]
   let body = {}
   if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : codeItem.queryTime = []
     await DB.update('smsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
       queryTime: [
