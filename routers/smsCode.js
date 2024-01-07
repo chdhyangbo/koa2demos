@@ -136,4 +136,50 @@ router.post('/smsCode/elfp', async (ctx, next) => {
   ctx.body = body
 })
 
+router.post('/smsCode/waka', async (ctx, next) => {
+  const { searchNumber, ip = '', city = '' } = ctx.request.body;
+  let codeItem = []
+  try {
+    codeItem= await DB.find('waka', {
+      value: searchNumber
+    })
+  } catch (error) {
+    console.log(error)
+    ctx.body = {
+      message: '查询失败',
+      cc: 1
+    }
+    next();
+  }
+  
+  console.log(codeItem)
+  codeItem = codeItem[0]
+  let body = {}
+  if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+    await DB.update('waka', { "_id": DB.getObjectId(codeItem._id) }, {
+      ...codeItem || [],
+      queryTime: [
+        ...codeItem.queryTime,
+        {
+          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+          ip,
+          city,
+        }
+      ]
+    });
+    body = {
+      message: '校验成功',
+      ...codeItem,
+      cc: 0
+    };
+  } else {
+    body = {
+      message: '查询失败',
+      cc: 1
+    }
+  }
+  ctx.body = body
+})
+
 module.exports = router;
