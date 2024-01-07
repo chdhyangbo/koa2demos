@@ -32,11 +32,7 @@ class DB{
         let that=this;
         return new Promise((resolve,reject)=>{
             //  解决数据库多次连接的问题
-<<<<<<< HEAD
             if(!that.dbClient){   
-=======
-            if(!that.dbClient){    
->>>>>>> a8b82175111393832348f89575c98125d86d8938
                 MongoClient.connect(Config.dbUrl, (err,client)=>{
                     if(err){
                         console.log('链接数据库失败')

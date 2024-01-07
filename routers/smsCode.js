@@ -17,7 +17,7 @@ router.post('/smsCode/query', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
   let codeItem = []
   try {
-    codeItem= await DB.find('smsCode', {
+    codeItem = await DB.find('smsCode', {
       value: searchNumber
     })
   } catch (error) {
@@ -28,12 +28,13 @@ router.post('/smsCode/query', async (ctx, next) => {
     }
     next();
   }
-  
+
   console.log(codeItem)
   codeItem = codeItem[0]
   let body = {}
   if (codeItem && codeItem._id) {
     codeItem.queryTime ? void 0 : codeItem.queryTime = []
+
     await DB.update('smsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
       queryTime: [
@@ -67,9 +68,10 @@ router.post('/smsCode/voodooQuery', async (ctx, next) => {
   })
   console.log(codeItem)
   codeItem = codeItem[0]
-  codeItem.queryTime ? void 0 : codeItem.queryTime = []
   let body = {}
   if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+
     await DB.update('voodooSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
       queryTime: [
@@ -104,10 +106,11 @@ router.post('/smsCode/elfp', async (ctx, next) => {
   })
   console.log(codeItem)
   codeItem = codeItem[0]
-  codeItem.queryTime ? void 0 : codeItem.queryTime = []
 
   let body = {}
   if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+
     await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
       ...codeItem,
       queryTime: [
