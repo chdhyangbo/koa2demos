@@ -18,7 +18,7 @@
     "koa-static": "^5.0.0",
     "koa-xml-body": "^2.2.0",
     "moment": "^2.29.1",
-    "mongodb": "^6.3.0",
+    "mongodb": "4.4",
     "node-cmd": "^5.0.0",
     "node-native-zip": "^1.1.0",
     "node-stream-zip": "^1.15.0",
@@ -26,6 +26,7 @@
     "ora": "^6.0.1",
     "pdf2json": "^2.0.0",
     "pkg": "^5.5.1",
+    "puppeteer": "^21.7.0",
     "xml2js": "^0.4.23"
   },
   "scripts": {
