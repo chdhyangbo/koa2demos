@@ -14,32 +14,36 @@ const DB = require('../db/index.js');
 const moment = require('moment');
 const { async } = require('node-stream-zip');
 
-const getBrand = async (website) => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: { width: 1440, height: 1000 },
-    ignoreHTTPSErrors: true,
-    args: [`--window-size=${1440},${1000}`], // new option
-  });
-  const page = await browser.newPage();
-  await page.setRequestInterception(true);
-  // page.on('request', request => {
+const getBrand = (website) => {
+  return new Promise(async (resolve, reject) => {
+    const browser = await puppeteer.launch({
+      headless: false,
+    });
 
-  //   request.continue();
-  // });
-
-  page.on("response", response => {
-    if (response.url().indexOf('v1') > -1) {
-      console.log(response.url())
-      console.log(response)
-    }
+    // 使用chrome的第一个窗口进行访问
+    const pages = await browser.pages();
+    const page = pages[0]
+    await page.goto(website, {
+      waitUntil: 'networkidle2' // 等待所有接口加载完毕
+    });
+    // 拦截返回接口获取返回信息
+    page.on('response', async (response) => {
+      if (response.url().indexOf('v1') > -1) {
+        let json = await response.json()
+        if (json) {
+          let cname = json.data.codeData?.meta?.specName;
+          console.log(cname);
+          resolve(cname)
+        } else {
+          resolve('')
+        }
+        await browser.close();
+      }
+    });
   })
-
-  await page.goto(website);
 
 
   // await page.screenshot({path: 'example.png'});
-  // await browser.close();
 }
 
 router.post('/scan/update', async (ctx, next) => {
@@ -63,19 +67,27 @@ router.post('/scan/update', async (ctx, next) => {
   if (!codeItem) {
     // 调用爬虫，查询时候到品牌
     let cname = await getBrand(website)
-    let brandDetail = {
-      cname, //品牌名称
-      website, // 网址
+    if (cname) {
+      let brandDetail = {
+        cname, //品牌名称
+        website, // 网址
+      }
+      await DB.insert('scan', brandDetail);
+      body = {
+        message: '入库成功',
+        ...brandDetail,
+        cc: 0
+      };
+    } else {
+      body = {
+        message: '入库失败',
+        cc: 1
+      }
     }
-    // await DB.insert('scan', brandDetail);
-    body = {
-      message: '入库成功',
-      ...brandDetail,
-      cc: 0
-    };
+
   } else {
     body = {
-      message: '入库失败',
+      message: '数据库已存在相同网址，无需重复添加',
       cc: 1
     }
   }
