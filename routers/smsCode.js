@@ -106,27 +106,36 @@ router.post('/smsCode/elfp', async (ctx, next) => {
   })
   console.log(codeItem)
   codeItem = codeItem[0]
-
+  
   let body = {}
   if (codeItem && codeItem._id) {
+
     codeItem.queryTime ? void 0 : codeItem.queryTime = []
 
-    await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
-      ...codeItem,
-      queryTime: [
-        ...codeItem.queryTime,
-        {
-          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
-        }
-      ]
-    });
-    body = {
-      message: '校验成功',
-      ...codeItem,
-      cc: 0
-    };
+    if (codeItem.queryTime.length === 1) {
+      body = {
+        message: 'query too many times',
+        cc: 0
+      };
+    } else {
+      await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+            ip,
+            city,
+          }
+        ]
+      });
+      body = {
+        message: '校验成功',
+        ...codeItem,
+        cc: 0
+      };
+    }
+
   } else {
     body = {
       message: '查询失败',
