@@ -23,7 +23,7 @@ router.post('/smsCode/query', async (ctx, next) => {
   } catch (error) {
     console.log(error)
     ctx.body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
     next();
@@ -47,13 +47,13 @@ router.post('/smsCode/query', async (ctx, next) => {
       ]
     });
     body = {
-      message: '校验成功',
+      message: 'verify success',
       ...codeItem,
       cc: 0
     };
   } else {
     body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
   }
@@ -84,13 +84,13 @@ router.post('/smsCode/voodooQuery', async (ctx, next) => {
       ]
     });
     body = {
-      message: '校验成功',
+      message: 'verify success',
       ...codeItem,
       cc: 0
     };
   } else {
     body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
   }
@@ -130,7 +130,7 @@ router.post('/smsCode/elfp', async (ctx, next) => {
         ]
       });
       body = {
-        message: '校验成功',
+        message: 'verify success',
         ...codeItem,
         cc: 0
       };
@@ -138,7 +138,7 @@ router.post('/smsCode/elfp', async (ctx, next) => {
 
   } else {
     body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
   }
@@ -155,7 +155,7 @@ router.post('/smsCode/waka', async (ctx, next) => {
   } catch (error) {
     console.log(error)
     ctx.body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
     next();
@@ -178,13 +178,13 @@ router.post('/smsCode/waka', async (ctx, next) => {
       ]
     });
     body = {
-      message: '校验成功',
+      message: 'verify success',
       ...codeItem,
       cc: 0
     };
   } else {
     body = {
-      message: '查询失败',
+      message: 'query fail',
       cc: 1
     }
   }
