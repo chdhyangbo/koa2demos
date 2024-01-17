@@ -112,10 +112,10 @@ router.post('/smsCode/elfp', async (ctx, next) => {
 
     codeItem.queryTime ? void 0 : codeItem.queryTime = []
 
-    if (codeItem.queryTime.length === 1) {
+    if (codeItem.queryTime.length >= 1) {
       body = {
         message: 'query too many times',
-        cc: 0
+        cc: 1
       };
     } else {
       await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
