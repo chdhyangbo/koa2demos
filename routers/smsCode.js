@@ -32,7 +32,7 @@ router.post('/smsCode/query', async (ctx, next) => {
   console.log(codeItem)
   codeItem = codeItem[0]
   let body = {}
-  if (codeItem && codeItem._id) {
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
     codeItem.queryTime ? void 0 : codeItem.queryTime = []
 
     await DB.update('smsCode', { "_id": DB.getObjectId(codeItem._id) }, {
@@ -108,7 +108,7 @@ router.post('/smsCode/elfp', async (ctx, next) => {
   codeItem = codeItem[0]
   
   let body = {}
-  if (codeItem && codeItem._id) {
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
 
     codeItem.queryTime ? void 0 : codeItem.queryTime = []
 
