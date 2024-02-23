@@ -85,6 +85,6 @@ app.use(scanCodeRouter.routes());// 扫一扫增删改查路由
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(80,'0.0.0.0',()=>{
-    console.log('[demo] server is starting at port 80');
+app.listen(8008,'0.0.0.0',()=>{
+    console.log('[demo] server is starting at port 8008');
 });

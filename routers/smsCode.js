@@ -193,7 +193,6 @@ router.post('/smsCode/waka', async (ctx, next) => {
 
 router.post('/smsCode/ilia', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
-  console.log(ctx.request.body, '???');
   let codeItem = []
   try {
     codeItem= await DB.find('ilia', {
