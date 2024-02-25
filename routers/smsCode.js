@@ -194,6 +194,9 @@ router.post('/smsCode/waka', async (ctx, next) => {
 
 router.post('/smsCode/ilia', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
+  let ips = ctx.request.headers['x-forwarded-for'] || ctx.request.headers['x-real-ip'] ||  ctx.request.ip
+  console.log('ip', ips)
+  let citys = ipnet.find(ips)
   let codeItem = []
   try {
     codeItem= await DB.find('ilia', {
@@ -208,6 +211,7 @@ router.post('/smsCode/ilia', async (ctx, next) => {
     next();
   }
   
+  console.log(codeItem)
   codeItem = codeItem[0]
   let body = {}
   if (codeItem && codeItem._id) {
@@ -218,8 +222,8 @@ router.post('/smsCode/ilia', async (ctx, next) => {
         ...codeItem.queryTime,
         {
           time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
+          ip: ips,
+          city: citys[0] == '中国' ? citys[1] + '省' + citys[2] + '市' : citys.join(''),
         }
       ]
     });
