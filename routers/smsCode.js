@@ -5,6 +5,7 @@
  * @Last Modified time: 2023-12-13 20:35:25
  * 验证码
  */
+const ipnet = require('xz-ipnet')();
 const Router = require('koa-router');
 let router = new Router({
   prefix: '/api'
@@ -193,6 +194,7 @@ router.post('/smsCode/waka', async (ctx, next) => {
 
 router.post('/smsCode/ilia', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
+  const ipAddress = ipnet.find('119.28.151.85')
   let codeItem = []
   try {
     codeItem= await DB.find('ilia', {
@@ -207,7 +209,6 @@ router.post('/smsCode/ilia', async (ctx, next) => {
     next();
   }
   
-  console.log(codeItem)
   codeItem = codeItem[0]
   let body = {}
   if (codeItem && codeItem._id) {
@@ -219,7 +220,7 @@ router.post('/smsCode/ilia', async (ctx, next) => {
         {
           time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
           ip,
-          city,
+          city: ipAddress[0],
         }
       ]
     });

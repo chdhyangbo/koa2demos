@@ -27,7 +27,8 @@
     "pdf2json": "^2.0.0",
     "pkg": "^5.5.1",
     "puppeteer": "^21.7.0",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "xz-ipnet": "^1.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
