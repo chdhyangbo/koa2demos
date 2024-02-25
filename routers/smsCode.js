@@ -194,7 +194,6 @@ router.post('/smsCode/waka', async (ctx, next) => {
 
 router.post('/smsCode/ilia', async (ctx, next) => {
   const { searchNumber, ip = '', city = '' } = ctx.request.body;
-  const ipAddress = ipnet.find('119.28.151.85')
   let codeItem = []
   try {
     codeItem= await DB.find('ilia', {
@@ -220,7 +219,7 @@ router.post('/smsCode/ilia', async (ctx, next) => {
         {
           time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
           ip,
-          city: ipAddress[0],
+          city,
         }
       ]
     });
