@@ -1,117 +1,124 @@
 /*
- * @Author: yjb 
- * @Date: 2023-12-13 20:35:25 
+ * @Author: yjb
+ * @Date: 2023-12-13 20:35:25
  * @Last Modified by: yjb
  * @Last Modified time: 2023-12-13 20:35:25
  * 验证码
  */
-const ipnet = require('xz-ipnet')();
-const Router = require('koa-router');
+const ipnet = require("xz-ipnet")();
+const Router = require("koa-router");
 let router = new Router({
-  prefix: '/api'
+  prefix: "/api",
 });
-const DB = require('../db/index.js');
-const moment = require('moment');
-const { async } = require('node-stream-zip');
+const DB = require("../db/index.js");
+const moment = require("moment");
+const { async } = require("node-stream-zip");
+const { log } = require("handlebars");
 
-router.post('/smsCode/query', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '' } = ctx.request.body;
-  let codeItem = []
+router.post("/smsCode/query", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
   try {
-    codeItem = await DB.find('smsCode', {
-      value: searchNumber
-    })
+    codeItem = await DB.find("smsCode", {
+      value: searchNumber,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     ctx.body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
     next();
   }
 
-  console.log(codeItem)
-  codeItem = codeItem[0]
-  let body = {}
+  console.log(codeItem);
+  codeItem = codeItem[0];
+  let body = {};
   if (codeItem && codeItem._id && codeItem.canQuery != 1) {
-    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
 
-    await DB.update('smsCode', { "_id": DB.getObjectId(codeItem._id) }, {
-      ...codeItem,
-      queryTime: [
-        ...codeItem.queryTime,
-        {
-          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
-        }
-      ]
-    });
+    await DB.update(
+      "smsCode",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
     body = {
-      message: 'verify success',
+      message: "verify success",
       ...codeItem,
-      cc: 0
+      cc: 0,
     };
   } else {
     body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
   }
-  ctx.body = body
-})
+  ctx.body = body;
+});
 
-router.post('/smsCode/voodooQuery', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '' } = ctx.request.body;
+router.post("/smsCode/voodooQuery", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
 
-  let codeItem = await DB.find('voodooSmsCode', {
-    value: searchNumber
-  })
-  console.log(codeItem)
-  codeItem = codeItem[0]
-  let body = {}
+  let codeItem = await DB.find("voodooSmsCode", {
+    value: searchNumber,
+  });
+  console.log(codeItem);
+  codeItem = codeItem[0];
+  let body = {};
   if (codeItem && codeItem._id) {
-    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
 
-    await DB.update('voodooSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
-      ...codeItem,
-      queryTime: [
-        ...codeItem.queryTime,
-        {
-          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
-        }
-      ]
-    });
+    await DB.update(
+      "voodooSmsCode",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
     body = {
-      message: 'verify success',
+      message: "verify success",
       ...codeItem,
-      cc: 0
+      cc: 0,
     };
   } else {
     body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
   }
-  ctx.body = body
-})
+  ctx.body = body;
+});
 
+router.post("/smsCode/elfp", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
 
-router.post('/smsCode/elfp', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '' } = ctx.request.body;
+  let codeItem = await DB.find("elfpSmsCode", {
+    value: searchNumber,
+  });
+  console.log(codeItem);
+  codeItem = codeItem[0];
 
-  let codeItem = await DB.find('elfpSmsCode', {
-    value: searchNumber
-  })
-  console.log(codeItem)
-  codeItem = codeItem[0]
-  
-  let body = {}
+  let body = {};
   if (codeItem && codeItem._id && codeItem.canQuery != 1) {
-
-    codeItem.queryTime ? void 0 : codeItem.queryTime = []
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
 
     // if (codeItem.queryTime.length >= 1) {
     //   body = {
@@ -119,122 +126,187 @@ router.post('/smsCode/elfp', async (ctx, next) => {
     //     cc: 1
     //   };
     // } else {
-      await DB.update('elfpSmsCode', { "_id": DB.getObjectId(codeItem._id) }, {
+    await DB.update(
+      "elfpSmsCode",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
         ...codeItem,
         queryTime: [
           ...codeItem.queryTime,
           {
-            time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
             ip,
             city,
-          }
-        ]
-      });
-      body = {
-        message: 'verify success',
-        ...codeItem,
-        cc: 0
-      };
+          },
+        ],
+      }
+    );
+    body = {
+      message: "verify success",
+      ...codeItem,
+      cc: 0,
+    };
     // }
-
   } else {
     body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
   }
-  ctx.body = body
-})
+  ctx.body = body;
+});
 
-router.post('/smsCode/waka', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '' } = ctx.request.body;
-  let codeItem = []
+router.post("/smsCode/waka", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
   try {
-    codeItem= await DB.find('waka', {
-      value: searchNumber
-    })
+    codeItem = await DB.find("waka", {
+      value: searchNumber,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     ctx.body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
     next();
   }
-  
-  console.log(codeItem)
-  codeItem = codeItem[0]
-  let body = {}
+
+  console.log(codeItem);
+  codeItem = codeItem[0];
+  let body = {};
   if (codeItem && codeItem._id) {
-    codeItem.queryTime ? void 0 : codeItem.queryTime = []
-    await DB.update('waka', { "_id": DB.getObjectId(codeItem._id) }, {
-      ...codeItem || [],
-      queryTime: [
-        ...codeItem.queryTime,
-        {
-          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
-        }
-      ]
-    });
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+    await DB.update(
+      "waka",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...(codeItem || []),
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
     body = {
-      message: 'verify success',
+      message: "verify success",
       ...codeItem,
-      cc: 0
+      cc: 0,
     };
   } else {
     body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
   }
-  ctx.body = body
-})
+  ctx.body = body;
+});
 
-router.post('/smsCode/ilia', async (ctx, next) => {
-  const { searchNumber, ip = '', city = '' } = ctx.request.body;
-  let codeItem = []
+router.post("/smsCode/ilia", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
   try {
-    codeItem= await DB.find('ilia', {
-      value: searchNumber
-    })
+    codeItem = await DB.find("ilia", {
+      value: searchNumber,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     ctx.body = {
-      message: 'query fail',
-      cc: 1
-    }
+      message: "query fail",
+      cc: 1,
+    };
     next();
   }
-  
-  codeItem = codeItem[0]
-  let body = {}
+
+  codeItem = codeItem[0];
+  let body = {};
   if (codeItem && codeItem._id) {
-    codeItem.queryTime ? void 0 : codeItem.queryTime = []
-    await DB.update('ilia', { "_id": DB.getObjectId(codeItem._id) }, {
-      ...codeItem || [],
-      queryTime: [
-        ...codeItem.queryTime,
-        {
-          time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-          ip,
-          city,
-        }
-      ]
-    });
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+    await DB.update(
+      "ilia",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...(codeItem || []),
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
     body = {
-      message: '验证成功',
+      message: "验证成功",
       ...codeItem,
-      cc: 0
+      cc: 0,
     };
   } else {
     body = {
-      message: '验证失败',
-      cc: 1
-    }
+      message: "验证失败",
+      cc: 1,
+    };
   }
-  ctx.body = body
-})
+  ctx.body = body;
+});
+
+router.post("/smsCode/frax", async (ctx, next) => {
+  const { searchNumber, name, email, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("frax", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log(error);
+    ctx.body = {
+      message: "query fail",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  let body = {};
+  if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+    await DB.update(
+      "frax",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...(codeItem || []),
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+            name,
+            email,
+          },
+        ],
+      }
+    );
+    codeItem = await DB.find("frax", {
+      value: searchNumber,
+    });
+    body = {
+      message: "success",
+      ...codeItem[0],
+      cc: 0,
+    };
+  } else {
+    body = {
+      message: "fail",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
 
 module.exports = router;
