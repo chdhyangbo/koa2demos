@@ -3,6 +3,18 @@ const https = require('https');
 const fs = require('fs');
 const app = new Koa();
 
+// HTTP -> HTTPS 重定向中间件
+app.use((ctx, next) => {
+    // 只对下面的域名进行重定向
+    if (ctx.request.protocol === 'http' && ctx.request.host === 'frxavapes.com' ) {
+      const httpsPort = 443; // HTTPS 端口
+      const redirectUrl = `https://${ctx.request.host}:${httpsPort}${ctx.request.url}`;
+      ctx.redirect(redirectUrl);
+    } else {
+      return next();
+    }
+  });
+
 // 生成静态目录
 const KoaStatic = require('koa-static');
 
@@ -22,7 +34,8 @@ const aromaKingSearchRouter = require('./routers/aromaKingSearch');
 const smsCodeRouter = require('./routers/smsCode');
 const scanCodeRouter = require('./routers/scan');
 
-const Application = require('koa');
+
+
 app.use(koaBody({
     multipart: true,
     formidable: {
