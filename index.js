@@ -1,11 +1,13 @@
-const Koa  = require('koa');
+const Koa = require('koa');
+const https = require('https');
+const fs = require('fs');
 const app = new Koa();
 
 // 生成静态目录
 const KoaStatic = require('koa-static');
 
 const path = require('path')
-app.use(KoaStatic(path.join( __dirname, './static')));
+app.use(KoaStatic(path.join(__dirname, './static')));
 const koaBody = require('koa-body'); //解析上传文件的插件
 const xmlParser = require('koa-xml-body');//解析xml文件的插件
 const router = require('koa-router')();
@@ -33,10 +35,10 @@ app.use(async (ctx, next) => {
     let url = ctx.request.url;
     console.log(url);
     // 设置接口白名单
-    if (url == '/api/login' || 
-        url == '/api/regist' || 
-        url == "/api/uploadFile" || 
-        url.includes('api/download/') 
+    if (url == '/api/login' ||
+        url == '/api/regist' ||
+        url == "/api/uploadFile" ||
+        url.includes('api/download/')
         || url.includes('/search')
         || url.includes('/api/eluxSearch')
         || url.includes('/api/aromaKingSearch')
@@ -50,9 +52,9 @@ app.use(async (ctx, next) => {
         console.log(token);
         // 解码
         let payload = jwt.verify(token, 'ybadmin');
-        let { time, timeout, phone, username} = payload;
+        let { time, timeout, phone, username } = payload;
         let date = new Date().getTime();
-        if ( date - time <= timeout) {
+        if (date - time <= timeout) {
             // 记录到ctx全局中
             ctx.token = {
                 username,
@@ -85,6 +87,17 @@ app.use(scanCodeRouter.routes());// 扫一扫增删改查路由
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(80,'0.0.0.0',()=>{
+app.listen(80, '0.0.0.0', () => {
     console.log('[demo] server is starting at port 80');
+});
+
+// Load SSL certificate and private key
+const options = {
+    key: fs.readFileSync('frxavapes_com.key'),
+    cert: fs.readFileSync('frxavapes_com.pem')
+};
+
+// Create HTTPS server
+https.createServer(options, app.callback()).listen(443, () => {
+    console.log('Koa.js server running on https://localhost:443');
 });
