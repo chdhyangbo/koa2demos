@@ -319,4 +319,58 @@ router.post("/smsCode/frax", async (ctx, next) => {
   ctx.body = body;
 });
 
+router.post("/smsCode/sps", async (ctx, next) => {
+  const { searchNumber, name, email, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("sps", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log(error);
+    ctx.body = {
+      message: "query fail",
+      cc: 0,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  let body = {};
+  if (codeItem && codeItem._id) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+    await DB.update(
+      "sps",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...(codeItem || []),
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+            name,
+            email,
+          },
+        ],
+      }
+    );
+    codeItem = await DB.find("sps", {
+      value: searchNumber,
+    });
+    body = {
+      message: "success",
+      ...codeItem[0],
+      cc: codeItem[0].queryTime.length <= 6 ? 1 : 2,
+    };
+  } else {
+    body = {
+      message: "fail",
+      cc: 0,
+    };
+  }
+  ctx.body = body;
+});
+
 module.exports = router;
