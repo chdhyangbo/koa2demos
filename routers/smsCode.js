@@ -362,7 +362,12 @@ router.post("/smsCode/sps", async (ctx, next) => {
     body = {
       message: "success",
       ...codeItem[0],
-      cc: codeItem[0].queryTime.length <= 6 ? 1 : 2,
+      cc:
+        codeItem[0].queryTime.length == 1
+          ? 1
+          : codeItem[0].queryTime.length <= 6
+          ? 1
+          : 2,
     };
   } else {
     body = {
@@ -370,6 +375,40 @@ router.post("/smsCode/sps", async (ctx, next) => {
       cc: 0,
     };
   }
+  ctx.body = body;
+});
+
+router.post("/smsCode/spsProductInfo", async (ctx, next) => {
+  const { searchNumber, name, email, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("sps", {
+      productNo: searchNumber,
+    });
+  } catch (error) {
+    console.log(error);
+    ctx.body = {
+      message: "query fail",
+      cc: 0,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  let body = {};
+  if (codeItem && codeItem._id) {
+    body = {
+      message: "success",
+      productInfo: codeItem.productInfo,
+      cc: 1,
+    };
+  } else {
+    body = {
+      message: "fail",
+      cc: 0,
+    };
+  }
+  console.log(body, "body");
   ctx.body = body;
 });
 
