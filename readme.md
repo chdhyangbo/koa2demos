@@ -1,8 +1,8 @@
 # 数据库启用
 以后写成脚本，自动启动
 ## 开发环境
-进入mongodb的bin库那里
-mongod --dbpath D:\study\basedb
+进入mongodb的bin库那里,并且更换默认端口为8090
+mongod --dbpath D:\study\basedb --port 8090
 databasename(仓库名称): baseDB 
 ## 生产环境
 
