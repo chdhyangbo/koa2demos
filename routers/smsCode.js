@@ -412,4 +412,55 @@ router.post("/smsCode/spsProductInfo", async (ctx, next) => {
   ctx.body = body;
 });
 
+router.post("/smsCode/relxQuery", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("relxQuery", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  console.log(codeItem);
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "relxQuery",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    body = {
+      message: "verify success",
+      ...codeItem,
+      cc: 0,
+    };
+  } else {
+    body = {
+      message: "query fail",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
+
 module.exports = router;
