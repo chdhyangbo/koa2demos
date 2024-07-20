@@ -416,7 +416,7 @@ router.post("/smsCode/relxQuery", async (ctx, next) => {
   const { searchNumber, ip = "", city = "" } = ctx.request.body;
   let codeItem = [];
   try {
-    codeItem = await DB.find("relxQuery", {
+    codeItem = await DB.find("smsCode", {
       value: searchNumber,
     });
   } catch (error) {
@@ -435,7 +435,7 @@ router.post("/smsCode/relxQuery", async (ctx, next) => {
     codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
 
     await DB.update(
-      "relxQuery",
+      "smsCode",
       { _id: DB.getObjectId(codeItem._id) },
       {
         ...codeItem,
