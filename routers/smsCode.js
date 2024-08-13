@@ -500,9 +500,12 @@ router.post("/smsCode/vozolQuery", async (ctx, next) => {
         ],
       }
     );
+    const res = await DB.find("vozol", {
+      value: searchNumber,
+    });
     body = {
       message: "verify success",
-      ...codeItem,
+      ...res[0],
       cc: 0,
     };
   } else {
