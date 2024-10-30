@@ -667,11 +667,19 @@ router.post("/smsCode/randm", async (ctx, next) => {
     const res = await DB.find("randm", {
       value: searchNumber,
     });
-    body = {
-      message: "verify success",
-      ...res[0],
-      cc: 0,
-    };
+
+    if (res[0].queryTime.length > 1) {
+      body = {
+        message: "data was checked",
+        cc: 2,
+      };
+    } else {
+      body = {
+        message: "verify success",
+        ...res[0],
+        cc: 0,
+      };
+    }
   } else {
     body = {
       message: "query fail: data is not exist",
