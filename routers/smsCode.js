@@ -671,6 +671,7 @@ router.post("/smsCode/randm", async (ctx, next) => {
     if (res[0].queryTime.length > 1) {
       body = {
         message: "data was checked",
+        ...res[0],
         cc: 2,
       };
     } else {
