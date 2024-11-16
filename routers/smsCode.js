@@ -517,4 +517,177 @@ router.post("/smsCode/vozolQuery", async (ctx, next) => {
   ctx.body = body;
 });
 
+router.post("/smsCode/zgarQuery", async (ctx, next) => {
+  console.log("?????");
+
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("zgar", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  console.log(codeItem);
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "zgar",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    const res = await DB.find("zgar", {
+      value: searchNumber,
+    });
+    body = {
+      message: "verify success",
+      ...res[0],
+      cc: 0,
+    };
+  } else {
+    body = {
+      message: "query fail",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
+
+router.post("/smsCode/aliBarBarQuery", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("aliBarBar", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail: please contact coder",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  console.log(codeItem);
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "aliBarBar",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    const res = await DB.find("aliBarBar", {
+      value: searchNumber,
+    });
+    body = {
+      message: "verify success",
+      ...res[0],
+      cc: 0,
+    };
+  } else {
+    body = {
+      message: "query fail: data is not exist",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
+
+router.post("/smsCode/randm", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("randm", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail: please contact coder",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  console.log(codeItem);
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "randm",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    const res = await DB.find("randm", {
+      value: searchNumber,
+    });
+
+    if (res[0].queryTime.length > 1) {
+      body = {
+        message: "data was checked",
+        ...res[0],
+        cc: 2,
+      };
+    } else {
+      body = {
+        message: "verify success",
+        ...res[0],
+        cc: 0,
+      };
+    }
+  } else {
+    body = {
+      message: "query fail: data is not exist",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
+
 module.exports = router;

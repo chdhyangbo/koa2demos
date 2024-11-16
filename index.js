@@ -33,12 +33,17 @@ const antiSearchRouter = require("./routers/antiSearch");
 const aromaKingSearchRouter = require("./routers/aromaKingSearch");
 const smsCodeRouter = require("./routers/smsCode");
 const scanCodeRouter = require("./routers/scan");
+const uploadRouter = require("./routers/upload");
 
 app.use(
   koaBody({
     multipart: true,
     formidable: {
       maxFileSize: 2000 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
+      // 上传目录
+      uploadDir: path.join(__dirname, "/public/upload"),
+      // 是否保留拓展名
+      keepExtensions: true,
     },
   })
 );
@@ -95,6 +100,7 @@ app.use(aromaKingSearchRouter.routes()); // 电子烟增删改查路由
 app.use(antiSearchRouter.routes()); // 电子烟增删改查路由
 app.use(smsCodeRouter.routes()); // 验证码增删改查路由
 app.use(scanCodeRouter.routes()); // 扫一扫增删改查路由
+app.use(uploadRouter.routes());
 
 app.use(router.routes()).use(router.allowedMethods());
 
