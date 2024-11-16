@@ -102,11 +102,34 @@ app.listen(80, "0.0.0.0", () => {
   console.log("[demo] server is starting at port 80");
 });
 
-// Load SSL certificate and private key
+// Load SSL certificate and private key 多域名配置
+const secureContext = {
+  'allbarbar.com': tls.createSecureContext({
+    key: fs.readFileSync("allbarbar_com.key"),
+    cert: fs.readFileSync("allbarbar_com.pem"),
+  }),
+}
 const options = {
+  SNICallback: function (domain, cb) {
+    if (secureContext[domain]) {
+      if (cb) {
+        cb(null, secureContext[domain]);
+      } else {
+        // compatibility for older versions of node
+        return secureContext[domain];
+      }
+    } else {
+      throw new Error('No keys/certificates for domain requested');
+    }
+  },
   key: fs.readFileSync("frxavapes_com.key"),
   cert: fs.readFileSync("frxavapes_com.pem"),
 };
+
+// const options = {
+//   key: fs.readFileSync("frxavapes_com.key"),
+//   cert: fs.readFileSync("frxavapes_com.pem"),
+// };
 
 // Create HTTPS server
 https.createServer(options, app.callback()).listen(443, () => {
