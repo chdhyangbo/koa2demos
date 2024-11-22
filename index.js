@@ -18,6 +18,7 @@ app.use((ctx, next) => {
 // 生成静态目录
 const KoaStatic = require("koa-static");
 
+var tls = require('tls');
 const path = require("path");
 app.use(KoaStatic(path.join(__dirname, "./static")));
 const koaBody = require("koa-body"); //解析上传文件的插件
@@ -114,17 +115,24 @@ const secureContext = {
     key: fs.readFileSync("allbarbar_com.key"),
     cert: fs.readFileSync("allbarbar_com.pem"),
   }),
+  'frxavapes.com': tls.createSecureContext({
+    key: fs.readFileSync("frxavapes_com.key"),
+    cert: fs.readFileSync("frxavapes_com.pem"),
+  }),
 }
 const options = {
   SNICallback: function (domain, cb) {
+    console.log[domain];
     if (secureContext[domain]) {
       if (cb) {
+        console.log(domain)
         cb(null, secureContext[domain]);
       } else {
         // compatibility for older versions of node
         return secureContext[domain];
       }
     } else {
+      return secureContext['frxavapes.com'];
       throw new Error('No keys/certificates for domain requested');
     }
   },
