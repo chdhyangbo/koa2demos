@@ -6,7 +6,7 @@ const app = new Koa();
 // HTTP -> HTTPS 重定向中间件
 app.use((ctx, next) => {
   // 只对下面的域名进行重定向
-  if (ctx.request.protocol === "http" && ctx.request.host === "frxavapes.com") {
+  if (ctx.request.protocol === "http" && ["frxavapes.com", "allbarbar.com"].includes(ctx.request.host)) {
     const httpsPort = 443; // HTTPS 端口
     const redirectUrl = `https://${ctx.request.host}:${httpsPort}${ctx.request.url}`;
     ctx.redirect(redirectUrl);
@@ -18,6 +18,7 @@ app.use((ctx, next) => {
 // 生成静态目录
 const KoaStatic = require("koa-static");
 
+var tls = require('tls');
 const path = require("path");
 app.use(KoaStatic(path.join(__dirname, "./static")));
 const koaBody = require("koa-body"); //解析上传文件的插件
@@ -114,6 +115,10 @@ const secureContext = {
     key: fs.readFileSync("allbarbar_com.key"),
     cert: fs.readFileSync("allbarbar_com.pem"),
   }),
+  'frxavapes.com': tls.createSecureContext({
+    key: fs.readFileSync("frxavapes_com.key"),
+    cert: fs.readFileSync("frxavapes_com.pem"),
+  }),
 }
 const options = {
   SNICallback: function (domain, cb) {
@@ -125,6 +130,7 @@ const options = {
         return secureContext[domain];
       }
     } else {
+      // return secureContext[domain];
       throw new Error('No keys/certificates for domain requested');
     }
   },
