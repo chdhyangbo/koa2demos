@@ -122,15 +122,17 @@ const secureContext = {
 }
 const options = {
   SNICallback: function (domain, cb) {
+    console.log[domain];
     if (secureContext[domain]) {
       if (cb) {
+        console.log(domain)
         cb(null, secureContext[domain]);
       } else {
         // compatibility for older versions of node
         return secureContext[domain];
       }
     } else {
-      // return secureContext[domain];
+      return secureContext['frxavapes.com'];
       throw new Error('No keys/certificates for domain requested');
     }
   },
