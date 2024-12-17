@@ -115,6 +115,10 @@ const secureContext = {
     key: fs.readFileSync("allbarbar_com.key"),
     cert: fs.readFileSync("allbarbar_com.pem"),
   }),
+  'geekbor.com': tls.createSecureContext({
+    key: fs.readFileSync("geekbor_com.key"),
+    cert: fs.readFileSync("geekbor_com.pem"),
+  }),
   'frxavapes.com': tls.createSecureContext({
     key: fs.readFileSync("frxavapes_com.key"),
     cert: fs.readFileSync("frxavapes_com.pem"),
