@@ -743,4 +743,76 @@ router.post("/smsCode/geeker", async (ctx, next) => {
   ctx.body = body;
 });
 
+// pinquer
+router.post("/smsCode/pinquer", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("pinquer", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail: please contact coder",
+      cc: 0,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "pinquer",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    const res = await DB.find("pinquer", {
+      value: searchNumber,
+    });
+    body = {
+      message: "verify success",
+      ...res[0],
+      cc: 1,
+    };
+  } else {
+    body = {
+      message: "query fail: data is not exist",
+      cc: 0,
+    };
+  }
+  ctx.body = body;
+});
+
+router.post("/smsCode/pinquer/queryTimes", async (ctx, next) => {
+  const { searchNumber } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("pinquer", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail: please contact coder",
+      cc: 0,
+    };
+    next();
+  }
+  ctx.body = codeItem[0];
+});
+
 module.exports = router;
