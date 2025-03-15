@@ -6,7 +6,7 @@ const app = new Koa();
 // HTTP -> HTTPS 重定向中间件
 app.use((ctx, next) => {
   // 只对下面的域名进行重定向
-  if (ctx.request.protocol === "http" && ["frxavapes.com", "allbarbar.com"].includes(ctx.request.host)) {
+  if (ctx.request.protocol === "http" && ["frxavapes.com", "allbarbar.com", "geekbor.com"].includes(ctx.request.host)) {
     const httpsPort = 443; // HTTPS 端口
     const redirectUrl = `https://${ctx.request.host}:${httpsPort}${ctx.request.url}`;
     ctx.redirect(redirectUrl);
@@ -114,6 +114,10 @@ const secureContext = {
   'allbarbar.com': tls.createSecureContext({
     key: fs.readFileSync("allbarbar_com.key"),
     cert: fs.readFileSync("allbarbar_com.pem"),
+  }),
+  'geekbor.com': tls.createSecureContext({
+    key: fs.readFileSync("geekbor_com.key"),
+    cert: fs.readFileSync("geekbor_com.pem"),
   }),
   'frxavapes.com': tls.createSecureContext({
     key: fs.readFileSync("frxavapes_com.key"),
