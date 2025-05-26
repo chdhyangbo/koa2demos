@@ -765,7 +765,7 @@ router.post("/smsCode/geekers", async (ctx, next) => {
     codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
 
     await DB.update(
-      "geeker",
+      "geekers",
       { _id: DB.getObjectId(codeItem._id) },
       {
         ...codeItem,
@@ -779,7 +779,7 @@ router.post("/smsCode/geekers", async (ctx, next) => {
         ],
       }
     );
-    const res = await DB.find("geeker", {
+    const res = await DB.find("geekers", {
       value: searchNumber,
     });
     body = {
