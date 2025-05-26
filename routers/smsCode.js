@@ -743,6 +743,59 @@ router.post("/smsCode/geeker", async (ctx, next) => {
   ctx.body = body;
 });
 
+router.post("/smsCode/geekers", async (ctx, next) => {
+  const { searchNumber, ip = "", city = "" } = ctx.request.body;
+  let codeItem = [];
+  try {
+    codeItem = await DB.find("geekers", {
+      value: searchNumber,
+    });
+  } catch (error) {
+    console.log("error", error);
+    ctx.body = {
+      message: "query fail: please contact coder",
+      cc: 1,
+    };
+    next();
+  }
+
+  codeItem = codeItem[0];
+  let body = {};
+  if (codeItem && codeItem._id && codeItem.canQuery != 1) {
+    codeItem.queryTime ? void 0 : (codeItem.queryTime = []);
+
+    await DB.update(
+      "geeker",
+      { _id: DB.getObjectId(codeItem._id) },
+      {
+        ...codeItem,
+        queryTime: [
+          ...codeItem.queryTime,
+          {
+            time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            ip,
+            city,
+          },
+        ],
+      }
+    );
+    const res = await DB.find("geeker", {
+      value: searchNumber,
+    });
+    body = {
+      message: "verify success",
+      ...res[0],
+      cc: 0,
+    };
+  } else {
+    body = {
+      message: "query fail: data is not exist",
+      cc: 1,
+    };
+  }
+  ctx.body = body;
+});
+
 // pinquer
 router.post("/smsCode/pinquer", async (ctx, next) => {
   const { searchNumber, ip = "", city = "" } = ctx.request.body;
