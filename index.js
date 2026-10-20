@@ -17,10 +17,36 @@ app.use((ctx, next) => {
 
 // 生成静态目录
 const KoaStatic = require("koa-static");
+const send = require("koa-send");
 
 var tls = require('tls');
 const path = require("path");
 app.use(KoaStatic(path.join(__dirname, "./static")));
+// 为部署在子路径下的前端应用提供静态资源 404 和 SPA 页面回退。
+app.use(async (ctx, next) => {
+  if (ctx.method !== "GET" && ctx.method !== "HEAD") return next();
+
+  const apps = [
+    { prefix: "/admin-dashboard", directory: "admin-dashboard" },
+    { prefix: "/operation", directory: "operation" },
+  ];
+  const frontend = apps.find(
+    ({ prefix }) => ctx.path === prefix || ctx.path.startsWith(`${prefix}/`)
+  );
+  if (!frontend) return next();
+
+  const relativePath = ctx.path.slice(frontend.prefix.length);
+  // React Router 的无扩展名路径需要返回 index.html；缺失的资源应明确 404。
+  if (relativePath === "" || relativePath === "/" || !path.extname(relativePath)) {
+    await send(ctx, "index.html", {
+      root: path.join(__dirname, "static", frontend.directory),
+    });
+    return;
+  }
+
+  ctx.status = 404;
+  ctx.body = "Not Found";
+});
 const koaBody = require("koa-body"); //解析上传文件的插件
 const xmlParser = require("koa-xml-body"); //解析xml文件的插件
 const router = require("koa-router")();
@@ -79,6 +105,9 @@ app.use(async (ctx, next) => {
   } else {
     let token = ctx.request.headers["token"];
     console.log(token);
+    if(!token) {
+      await next();
+    }
     // 解码
     let payload = jwt.verify(token, "ybadmin");
     let { time, timeout, phone, username } = payload;
