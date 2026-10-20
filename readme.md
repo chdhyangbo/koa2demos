@@ -1,11 +1,20 @@
 # 数据库启用
 以后写成脚本，自动启动
 ## 开发环境
-进入mongodb的bin库那里,并且更换默认端口为8090,规避漏洞
-mongod --dbpath D:\study\basedb --port 8090
+进入mongodb的bin库那里,并且更换默认端口为8091,规避漏洞
+mongod --dbpath D:\study\basedb --port 8091
 databasename(仓库名称): baseDB 
-## 生产环境
 
+安装nodemon后进行启动
+```
+npm install -g nodemon
+
+npm run dev
+```
+## 生产环境
+```
+npm run prod
+```
 
 
 # 表

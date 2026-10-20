@@ -1,10 +1,3 @@
-/*
- * @Author: yb 
- * @Date: 2022-01-24 20:35:25 
- * @Last Modified by: yb
- * @Last Modified time: 2022-02-10 21:55:09
- * 时间导航栏增删改查
- */
 const Router = require('koa-router');
 let router = new Router({
     prefix: '/api'
@@ -12,16 +5,17 @@ let router = new Router({
 const fs = require('fs');
 const DB = require('../db/index.js');
 const path = require('path');
-const koaBody = require('koa-body'); //解析上传文件的插件
+const koaBody = require('koa-body');
 const moment = require('moment');
+
+router.post('/user/list', async (ctx) => {
+    let data = await DB.find('user', {});
+    ctx.body = data || [];
+});
 
 router.post('/user/query', async (ctx, next) => {
     const { username } = ctx.request.body;
-    console.log(username);
-    let contents = await DB.find('user', {
-        username,
-    });
-    console.log('contents', contents);
+    let contents = await DB.find('user', { username });
     let body = {};
     if (contents) {
         body = {
@@ -38,8 +32,6 @@ router.post('/user/query', async (ctx, next) => {
     ctx.body = body;
 })
 
-
-// 新增用户
 router.post('/user/save', async (ctx, next) => {
     let { username, phone, password, email} = ctx.request.body;
     let data = await DB.insert('user', {
@@ -49,7 +41,6 @@ router.post('/user/save', async (ctx, next) => {
         email,
         time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     });
-    console.log(data);
     try {
         if (data.acknowledged) {
             body = {
@@ -63,13 +54,10 @@ router.post('/user/save', async (ctx, next) => {
             cc: 1
         }
     }
-    // 获取表单提交的数据
-    console.log('新增情况', body)
     ctx.body = body;
     await next();
 })
 
-// 删除用户
 router.post('/user/delete', async (ctx) => {
     let id = ctx.request.body.id;
     if (!id) {
@@ -80,7 +68,6 @@ router.post('/user/delete', async (ctx) => {
         return;
     }
     let data = await DB.remove('user', { "_id": DB.getObjectId(id) });
-    console.log(data);
     try {
         if (data.acknowledged) {
             ctx.body = {
@@ -96,10 +83,8 @@ router.post('/user/delete', async (ctx) => {
     }
 })
 
-// 更新内容
 router.post('/user/update', async (ctx) => {
     let { id, phone, email, username, passwordOld, passwordNew } = ctx.request.body;
-    console.log(id, phone, email, username);
     let params = {
         phone, 
         email, 
@@ -107,7 +92,6 @@ router.post('/user/update', async (ctx) => {
         updateTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     }
     if (passwordOld && passwordNew) {
-        // 单独修改个人密码的接口
         if (passwordOld == passwordNew) {
             ctx.body = {
                 message: '修改失败, 新密码不能和旧密码相同',
@@ -115,11 +99,7 @@ router.post('/user/update', async (ctx) => {
             }
             return 
         }
-
-        // 旧密码和服务器的旧密码不同
-        let contents = await DB.find('user', {
-            "_id": DB.getObjectId(id)
-        })
+        let contents = await DB.find('user', { "_id": DB.getObjectId(id) })
         if (contents[0].password !== passwordOld) {
             ctx.body = {
                 message: '修改失败, 旧密码错误',
@@ -127,14 +107,9 @@ router.post('/user/update', async (ctx) => {
             }
             return 
         }
-
-        // 使用新密码
         params.password = passwordNew;
     }
-    let data = await DB.update('user', { "_id": DB.getObjectId(id) }, {
-        ...params
-    });
-    console.log(data);
+    let data = await DB.update('user', { "_id": DB.getObjectId(id) }, { ...params });
     try {
         if (data.acknowledged) {
             ctx.body = {
@@ -149,6 +124,5 @@ router.post('/user/update', async (ctx) => {
         }
     }
 })
-
 
 module.exports = router;

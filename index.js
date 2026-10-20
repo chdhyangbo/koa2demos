@@ -25,9 +25,9 @@ const koaBody = require("koa-body"); //解析上传文件的插件
 const xmlParser = require("koa-xml-body"); //解析xml文件的插件
 const router = require("koa-router")();
 const jwt = require("jsonwebtoken");
-// const registeRouter = require('./routers/registe')
-// const loginRouter = require('./routers/login')
-// const userRouter = require('./routers/user');
+const registeRouter = require('./routers/registe')
+const loginRouter = require('./routers/login')
+const userRouter = require('./routers/user');
 const searchSmokeRouter = require("./routers/searchSmoke");
 const eluxSearchRouter = require("./routers/eluxSearch");
 const antiSearchRouter = require("./routers/antiSearch");
@@ -35,6 +35,9 @@ const aromaKingSearchRouter = require("./routers/aromaKingSearch");
 const smsCodeRouter = require("./routers/smsCode");
 const scanCodeRouter = require("./routers/scan");
 const uploadRouter = require("./routers/upload");
+const usageRouter = require("./routers/usage");
+const adminLoginRouter = require("./routers/adminLogin");
+const oauthRouter = require("./routers/oauth");
 
 app.use(
   koaBody({
@@ -56,6 +59,8 @@ app.use(async (ctx, next) => {
   // 设置接口白名单
   if (
     url == "/api/login" ||
+    url == "/api/admin/login" ||
+    url == "/api/admin/regist" ||
     url == "/api/regist" ||
     url == "/api/uploadFile" ||
     url.includes("api/download/") ||
@@ -65,7 +70,10 @@ app.use(async (ctx, next) => {
     url.includes("/api/antiSearch") ||
     url.includes("/api/smsCode") ||
     url.includes("/api/scan") ||
-    url.includes("/api/searchSmoke")
+    url.includes("/api/searchSmoke") ||
+    url.includes("/api/wechat") ||
+    url.includes("/api/usage") ||
+    url.includes("/api/oauth")
   ) {
     await next();
   } else {
@@ -92,9 +100,9 @@ app.use(async (ctx, next) => {
 });
 
 //启动路由
-// app.use(loginRouter.routes());//登录页面
-// app.use(registeRouter.routes());// 注册页面逻辑
-// app.use(userRouter.routes());// 用户增删改查路由
+app.use(loginRouter.routes());//登录页面
+app.use(registeRouter.routes());// 注册页面逻辑
+app.use(userRouter.routes());// 用户增删改查路由
 app.use(searchSmokeRouter.routes()); // 电子烟增删改查路由
 app.use(eluxSearchRouter.routes()); // 电子烟增删改查路由
 app.use(aromaKingSearchRouter.routes()); // 电子烟增删改查路由
@@ -102,27 +110,32 @@ app.use(antiSearchRouter.routes()); // 电子烟增删改查路由
 app.use(smsCodeRouter.routes()); // 验证码增删改查路由
 app.use(scanCodeRouter.routes()); // 扫一扫增删改查路由
 app.use(uploadRouter.routes());
+app.use(usageRouter.routes());
+app.use(adminLoginRouter.routes());
+app.use(oauthRouter.routes());
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(80, "0.0.0.0", () => {
-  console.log("[demo] server is starting at port 80");
+app.on('error', (err, ctx) => {
+  console.error('[ERROR]', err.message, err.stack);
 });
+
+const APP_PORT = process.env.NODE_ENV === 'production' ? 80 : 8090;
+app.listen(APP_PORT, "0.0.0.0", () => {
+  console.log("[demo] server is starting at port " + APP_PORT);
+});
+
 
 // Load SSL certificate and private key 多域名配置
 const secureContext = {
-  'allbarbar.com': tls.createSecureContext({
-    key: fs.readFileSync("allbarbar_com.key"),
-    cert: fs.readFileSync("allbarbar_com.pem"),
+  'cssshop.com.cn': tls.createSecureContext({
+    key: fs.readFileSync("cssshop.com.cn.key"),
+    cert: fs.readFileSync("cssshop.com.cn.crt"),
   }),
-  'geekbor.com': tls.createSecureContext({
-    key: fs.readFileSync("geekbor_com.key"),
-    cert: fs.readFileSync("geekbor_com.pem"),
-  }),
-  'frxavapes.com': tls.createSecureContext({
-    key: fs.readFileSync("frxavapes_com.key"),
-    cert: fs.readFileSync("frxavapes_com.pem"),
-  }),
+  'www.cssshop.com.cn': tls.createSecureContext({
+    key: fs.readFileSync("cssshop.com.cn.key"),
+    cert: fs.readFileSync("cssshop.com.cn.crt"),
+  })
 }
 const options = {
   SNICallback: function (domain, cb) {
@@ -136,12 +149,12 @@ const options = {
         return secureContext[domain];
       }
     } else {
-      return secureContext['frxavapes.com'];
+      return secureContext['cssshop.com.cn'];
       throw new Error('No keys/certificates for domain requested');
     }
   },
-  key: fs.readFileSync("frxavapes_com.key"),
-  cert: fs.readFileSync("frxavapes_com.pem"),
+  key: fs.readFileSync("cssshop.com.cn.key"),
+  cert: fs.readFileSync("cssshop.com.cn.crt"),
 };
 
 // const options = {
@@ -150,6 +163,8 @@ const options = {
 // };
 
 // Create HTTPS server
-https.createServer(options, app.callback()).listen(443, () => {
-  console.log("Koa.js server running on https://localhost:443");
-});
+if (process.env.NODE_ENV === 'production') {
+  https.createServer(options, app.callback()).listen(443, () => {
+    console.log("Koa.js server running on https://localhost:443");
+  });
+}
