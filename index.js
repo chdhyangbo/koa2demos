@@ -1,6 +1,9 @@
+require("./config/env");
+
 const Koa = require("koa");
 const https = require("https");
 const fs = require("fs");
+const { isAllowedOrigin } = require("./utils/origin");
 const app = new Koa();
 
 // HTTP -> HTTPS 重定向中间件
@@ -13,6 +16,24 @@ app.use((ctx, next) => {
   } else {
     return next();
   }
+});
+
+// Allow the native app WebView and explicitly configured H5 origins to call the auth API.
+app.use(async (ctx, next) => {
+  const origin = ctx.get('origin');
+  const allowed = isAllowedOrigin(ctx, origin);
+  if (origin && allowed) {
+    ctx.set('Access-Control-Allow-Origin', origin);
+    ctx.set('Vary', 'Origin');
+    ctx.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type, token');
+    ctx.set('Access-Control-Max-Age', '600');
+  }
+  if (ctx.method === 'OPTIONS') {
+    ctx.status = origin && allowed ? 204 : 403;
+    return;
+  }
+  await next();
 });
 
 // 生成静态目录
@@ -64,6 +85,7 @@ const uploadRouter = require("./routers/upload");
 const usageRouter = require("./routers/usage");
 const adminLoginRouter = require("./routers/adminLogin");
 const oauthRouter = require("./routers/oauth");
+const timewhisperAuthRouter = require("./routers/timewhisperAuth");
 
 app.use(
   koaBody({
@@ -88,6 +110,7 @@ app.use(async (ctx, next) => {
     url == "/api/admin/login" ||
     url == "/api/admin/regist" ||
     url == "/api/regist" ||
+    url.startsWith("/api/timewhisper/") ||
     url == "/api/uploadFile" ||
     url.includes("api/download/") ||
     url.includes("/search") ||
@@ -109,7 +132,7 @@ app.use(async (ctx, next) => {
       await next();
     }
     // 解码
-    let payload = jwt.verify(token, "ybadmin");
+    let payload = jwt.verify(token, process.env.JWT_SECRET || "ybadmin");
     let { time, timeout, phone, username } = payload;
     let date = new Date().getTime();
     if (date - time <= timeout) {
@@ -131,6 +154,7 @@ app.use(async (ctx, next) => {
 //启动路由
 app.use(loginRouter.routes());//登录页面
 app.use(registeRouter.routes());// 注册页面逻辑
+app.use(timewhisperAuthRouter.routes()).use(timewhisperAuthRouter.allowedMethods());
 app.use(userRouter.routes());// 用户增删改查路由
 app.use(searchSmokeRouter.routes()); // 电子烟增删改查路由
 app.use(eluxSearchRouter.routes()); // 电子烟增删改查路由

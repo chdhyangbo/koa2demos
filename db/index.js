@@ -100,18 +100,18 @@ class DB{
             })
         })
     }
-    // 删除数据
+    // 删除数据（mongodb 4.x 已移除 collection.remove，使用 deleteMany 保持原有语义）
     remove(collectionName,json){
         return new  Promise((resolve,reject)=>{
             this.connect().then((db)=>{
-                db.collection(collectionName).remove(json,function(err,result){
+                db.collection(collectionName).deleteMany(json,function(err,result){
                     if(err){
                         reject(err);
                     }else{
                         resolve(result);
                     }
                 })
-            })
+            }).catch(reject)
         })
     }
     // mongodb里面查询_id需要把字符串转换成对象
