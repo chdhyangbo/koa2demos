@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>开屏广告测试页</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      background: radial-gradient(circle at 25% 20%, #1a2d5a 0, transparent 45%),
+                  radial-gradient(circle at 80% 75%, #3d2a1a 0, transparent 50%),
+                  #06060a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 108px;
+      height: 108px;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      border-radius: 50%;
+      font-size: 44px;
+      color: #ffd76a;
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.18);
+    }
+    h1 { margin: 0; font-size: 30px; font-weight: 600; letter-spacing: 2px; }
+    p { margin: 0; max-width: 260px; font-size: 14px; line-height: 26px; color: rgba(255,255,255,0.5); }
+    .line { width: 64px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,215,0,0.5), transparent); }
+    .tag { font-size: 11px; letter-spacing: 4px; color: rgba(255,215,0,0.65); }
+  </style>
+</head>
+<body>
+  <div class="mark">✦</div>
+  <div class="tag">TIME WHISPER</div>
+  <h1>把此刻寄往未来</h1>
+  <div class="line"></div>
+  <p>这是一整页由后台配置的广告网页内容，点击任意位置即可前往详情页。</p>
+</body>
+</html>

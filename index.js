@@ -86,6 +86,11 @@ const usageRouter = require("./routers/usage");
 const adminLoginRouter = require("./routers/adminLogin");
 const oauthRouter = require("./routers/oauth");
 const timewhisperAuthRouter = require("./routers/timewhisperAuth");
+const timewhisperCapsulesRouter = require("./routers/timewhisperCapsules");
+const timewhisperSplashRouter = require("./routers/timewhisperSplash");
+
+const uploadDir = path.join(__dirname, "public/upload");
+fs.mkdirSync(uploadDir, { recursive: true });
 
 app.use(
   koaBody({
@@ -93,8 +98,8 @@ app.use(
     formidable: {
       maxFileSize: 2000 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
       // 上传目录
-      uploadDir: path.join(__dirname, "/public/upload"),
-      // 是否保留拓展名
+      uploadDir,
+      // 是否保留扩展名
       keepExtensions: true,
     },
   })
@@ -155,6 +160,8 @@ app.use(async (ctx, next) => {
 app.use(loginRouter.routes());//登录页面
 app.use(registeRouter.routes());// 注册页面逻辑
 app.use(timewhisperAuthRouter.routes()).use(timewhisperAuthRouter.allowedMethods());
+app.use(timewhisperCapsulesRouter.routes()).use(timewhisperCapsulesRouter.allowedMethods());
+app.use(timewhisperSplashRouter.routes()).use(timewhisperSplashRouter.allowedMethods());
 app.use(userRouter.routes());// 用户增删改查路由
 app.use(searchSmokeRouter.routes()); // 电子烟增删改查路由
 app.use(eluxSearchRouter.routes()); // 电子烟增删改查路由

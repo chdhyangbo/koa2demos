@@ -1,0 +1,69 @@
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:140:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:140:23
+    at process.processTicksAndRejections (node:intnode:events:486
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:8090
+    at Server.setupListenHandle [as _lis[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:140:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must bnode:events:486
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:8090
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at node:net:2206:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 8090
+}
+
+Node.js v24.13.0
+node:events:486
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:8090
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at node:net:2206:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 8090
+}
+
+Node.js v24.13.0
+Me\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:140:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:140:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
