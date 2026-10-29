@@ -86,6 +86,22 @@ class DB{
             })
         })
     }
+    // 原子自增（用于次数限制等并发敏感场景）
+    increment(collectionName, query, incJson){
+        return new Promise((resolve,reject)=>{
+            this.connect().then((db)=>{
+                db.collection(collectionName).updateOne(query,{
+                    $inc: incJson
+                },(err,result)=>{
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve(result);
+                    }
+                })
+            }).catch(reject)
+        })
+    }
     // 插入数据
     insert(collectionName,json){
         return new  Promise((resolve,reject)=>{

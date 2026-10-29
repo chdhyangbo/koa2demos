@@ -37,7 +37,8 @@
   },
   "scripts": {
     "dev": "nodemon index.js",
-    "prod": "cross-env  NODE_ENV=production nodemon index.js"
+    "prod": "cross-env  NODE_ENV=production nodemon index.js",
+    "gen:roleTest": "node scripts/generateRoleTestAccounts.js"
   },
   "author": "",
   "license": "ISC",

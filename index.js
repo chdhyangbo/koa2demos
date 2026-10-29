@@ -50,6 +50,7 @@ app.use(async (ctx, next) => {
   const apps = [
     { prefix: "/admin-dashboard", directory: "admin-dashboard" },
     { prefix: "/operation", directory: "operation" },
+    { prefix: "/catkeeper", directory: "catkeeper" },
   ];
   const frontend = apps.find(
     ({ prefix }) => ctx.path === prefix || ctx.path.startsWith(`${prefix}/`)
@@ -88,6 +89,8 @@ const oauthRouter = require("./routers/oauth");
 const timewhisperAuthRouter = require("./routers/timewhisperAuth");
 const timewhisperCapsulesRouter = require("./routers/timewhisperCapsules");
 const timewhisperSplashRouter = require("./routers/timewhisperSplash");
+const catkeeperRouter = require("./routers/catkeeper");
+const roleTestRouter = require("./routers/roleTest");
 
 const uploadDir = path.join(__dirname, "public/upload");
 fs.mkdirSync(uploadDir, { recursive: true });
@@ -116,6 +119,7 @@ app.use(async (ctx, next) => {
     url == "/api/admin/regist" ||
     url == "/api/regist" ||
     url.startsWith("/api/timewhisper/") ||
+    url.startsWith("/api/catkeeper/") ||
     url == "/api/uploadFile" ||
     url.includes("api/download/") ||
     url.includes("/search") ||
@@ -127,7 +131,8 @@ app.use(async (ctx, next) => {
     url.includes("/api/searchSmoke") ||
     url.includes("/api/wechat") ||
     url.includes("/api/usage") ||
-    url.includes("/api/oauth")
+    url.includes("/api/oauth") ||
+    url.includes("/api/roleTest")
   ) {
     await next();
   } else {
@@ -162,6 +167,7 @@ app.use(registeRouter.routes());// 注册页面逻辑
 app.use(timewhisperAuthRouter.routes()).use(timewhisperAuthRouter.allowedMethods());
 app.use(timewhisperCapsulesRouter.routes()).use(timewhisperCapsulesRouter.allowedMethods());
 app.use(timewhisperSplashRouter.routes()).use(timewhisperSplashRouter.allowedMethods());
+app.use(catkeeperRouter.routes()).use(catkeeperRouter.allowedMethods());
 app.use(userRouter.routes());// 用户增删改查路由
 app.use(searchSmokeRouter.routes()); // 电子烟增删改查路由
 app.use(eluxSearchRouter.routes()); // 电子烟增删改查路由
@@ -173,6 +179,7 @@ app.use(uploadRouter.routes());
 app.use(usageRouter.routes());
 app.use(adminLoginRouter.routes());
 app.use(oauthRouter.routes());
+app.use(roleTestRouter.routes()).use(roleTestRouter.allowedMethods());
 
 app.use(router.routes()).use(router.allowedMethods());
 
