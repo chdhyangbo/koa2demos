@@ -4,3 +4,129 @@
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
     at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
     at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
+[ERROR] jwt must be provided JsonWebTokenError: jwt must be provided
+    at module.exports [as verify] (D:\work\codeForMe\koa2demos\node_modules\jsonwebtoken\verify.js:53:17)
+    at D:\work\codeForMe\koa2demos\index.js:145:23
+    at async serve (D:\work\codeForMe\koa2demos\node_modules\koa-static\index.js:53:9)
+    at async D:\work\codeForMe\koa2demos\index.js:36:3
